@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.fechtelhoff</groupId>
+	<artifactId>pseudonymisator</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>pseudonymisator</name>
+	<description>Simple Java Application</description>
+
+	<properties>
+		<!-- Encoding  -->
+		<project.encoding>UTF-8</project.encoding>
+		<project.build.sourceEncoding>${project.encoding}</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
+
+		<!-- Java Version -->
+		<java.version>17</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+
+		<!-- ================================================================================== -->
+		<!-- Dependencies -->
+		<!-- ================================================================================== -->
+		<version.apache.commons-lang>3.12.0</version.apache.commons-lang>
+		<version.bouncycastle>1.75</version.bouncycastle>
+
+		<version.datafaker>2.0.1</version.datafaker>
+
+		<version.slf4j>2.0.7</version.slf4j>
+		<version.junit>5.10.0</version.junit>
+
+		<!-- ================================================================================== -->
+		<!-- Plugins -->
+		<!-- ================================================================================== -->
+		<!-- Maven Plugins -->
+		<version.assembly.plugin>3.6.0</version.assembly.plugin>
+		<version.compiler.plugin>3.11.0</version.compiler.plugin>
+		<version.jar.plugin>3.3.0</version.jar.plugin>
+		<version.javadoc.plugin>3.5.0</version.javadoc.plugin>
+		<version.resources.plugin>3.3.1</version.resources.plugin>
+		<version.source.plugin>3.3.0</version.source.plugin>
+		<version.surefire.plugin>3.1.2</version.surefire.plugin>
+
+		<!-- Other Plugins -->
+		<version.versions.plugin>2.16.0</version.versions.plugin>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Utils -->
+			<!-- https://commons.apache.org -->
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${version.apache.commons-lang}</version>
+			</dependency>
+
+			<!-- The Legion of the Bouncy Castle (Verschlüsselung) -->
+			<!-- https://www.bouncycastle.org -->
+			<!-- Provider -->
+			<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk18on</artifactId>
+				<version>${version.bouncycastle}</version>
+			</dependency>
+			<!-- PKIX/CMS/EAC/PKCS/OCSP/TSP/OPENSSL -->
+			<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on -->
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcpkix-jdk18on</artifactId>
+				<version>${version.bouncycastle}</version>
+			</dependency>
+
+			<!-- Logging -->
+			<!-- http://www.slf4j.org -->
+			<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${version.slf4j}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${version.slf4j}</version>
+			</dependency>
+
+			<!-- Datafaker -->
+			<!-- https://www.datafaker.net -->
+			<!-- https://mvnrepository.com/artifact/net.datafaker/datafaker -->
+			<dependency>
+				<groupId>net.datafaker</groupId>
+				<artifactId>datafaker</artifactId>
+				<version>${version.datafaker}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- JUnit 5 -->
+			<!-- https://junit.org/junit5 -->
+			<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>${version.junit}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- Utils -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+		<!-- Bouncy Castle -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk18on</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk18on</artifactId>
+		</dependency>
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</dependency>
+
+		<!-- Datafaker -->
+		<dependency>
+			<groupId>net.datafaker</groupId>
+			<artifactId>datafaker</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- JUnit 5 -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<testResources>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+
+		<pluginManagement>
+			<plugins>
+				<!-- Resources -->
+				<!-- https://maven.apache.org/plugins/maven-resources-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${version.resources.plugin}</version>
+					<configuration>
+						<propertiesEncoding>${project.encoding}</propertiesEncoding>
+					</configuration>
+				</plugin>
+
+				<!-- Compiler -->
+				<!-- https://maven.apache.org/plugins/maven-compiler-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${version.compiler.plugin}</version>
+					<configuration>
+						<release>${java.version}</release>
+						<encoding>${project.encoding}</encoding>
+						<showWarnings>true</showWarnings>
+						<showDeprecation>true</showDeprecation>
+					</configuration>
+				</plugin>
+
+				<!-- Jar -->
+				<!-- https://maven.apache.org/plugins/maven-jar-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${version.jar.plugin}</version>
+				</plugin>
+
+				<!-- Source -->
+				<!-- https://maven.apache.org/plugins/maven-source-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${version.source.plugin}</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- JavaDoc -->
+				<!-- https://maven.apache.org/plugins/maven-javadoc-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${version.javadoc.plugin}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>javadoc</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<noqualifier>all</noqualifier>
+						<failOnError>false</failOnError>
+						<doclint>none</doclint>
+						<show>protected</show>
+					</configuration>
+				</plugin>
+
+				<!-- Assembly -->
+				<!-- https://maven.apache.org/plugins/maven-assembly-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${version.assembly.plugin}</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+							<configuration>
+								<archive>
+									<manifestEntries>
+										<Program-Version>${project.version}</Program-Version>
+										<Multi-Release>true</Multi-Release>
+									</manifestEntries>
+								</archive>
+								<descriptorRefs>
+									<descriptorRef>jar-with-dependencies</descriptorRef>
+								</descriptorRefs>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Surefire -->
+				<!-- https://maven.apache.org/surefire/maven-surefire-plugin -->
+				<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${version.surefire.plugin}</version>
+				</plugin>
+
+				<!-- Versions -->
+				<!-- https://www.mojohaus.org/versions-maven-plugin/index.html -->
+				<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
+				<!-- Aufruf z.B. über "mvn versions:display-property-updates" -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${version.versions.plugin}</version>
+					<configuration>
+						<!--suppress UnresolvedMavenProperty -->
+						<rulesUri>file:///${session.executionRootDirectory}/maven-version-rules.xml</rulesUri>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<!-- Compiler -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+
+			<!-- Source -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+
+			<!-- Assembly -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+
+			<!-- Surefire -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
